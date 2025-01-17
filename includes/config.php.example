@@ -1,0 +1,52 @@
+<?php
+// config.php
+
+// MySQL Datenbankverbindung
+$host = 'localhost';
+$user = 'root';
+$password = 'your_password';
+$database = 'opensim_db';
+
+$conn = mysqli_connect($host, $user, $password, $database);
+
+if (!$conn) {
+    die('Verbindung zur Datenbank fehlgeschlagen: ' . mysqli_connect_error());
+}
+
+// Theme-Einstellungen
+$theme = [
+    'primary_color' => '#007bff',
+    'secondary_color' => '#6c757d',
+    'font_family' => 'Arial, sans-serif',
+    'font_size' => '16px',
+    'background_type' => 'color', // 'color' oder 'image'
+    'background_color' => '#ffffff',
+    'background_image' => 'background.jpg' // Dateiname des Hintergrundbilds im img-Ordner
+];
+
+// Layout-Optionen
+$layout = [
+    'header' => 'templates/default_header.php',
+    'footer' => 'templates/default_footer.php',
+    'navleft' => 'templates/default_navleft.php',
+    'navright' => 'templates/default_navright.php'
+];
+
+// Speichern der Konfiguration in einer Datei
+if (!function_exists('save_config')) {
+    function save_config($theme, $layout) {
+        $config = [
+            'theme' => $theme,
+            'layout' => $layout
+        ];
+        file_put_contents('includes/config.php', '<?php return ' . var_export($config, true) . ';');
+    }
+}
+
+// Laden der Konfiguration
+if (!function_exists('load_config')) {
+    function load_config() {
+        return include('includes/config.php');
+    }
+}
+?>
